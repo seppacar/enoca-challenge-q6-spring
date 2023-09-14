@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Override
     public List<Category> getAllCategories(){
         return categoryRepository.findAll();
     }
@@ -34,7 +36,24 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category updateCategory(Long id, Category category) {
-        return null;
+        // Check if the category with the given id exists in the database
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+
+        if (optionalCategory.isPresent()) {
+            Category existingCategory = optionalCategory.get();
+
+            // Update the properties of the existing category with the provided values
+            existingCategory.setName(category.getName());
+            // update other properties here as needed
+
+            // Save the updated category
+            Category savedCategory = categoryRepository.save(existingCategory);
+
+            return savedCategory;
+        } else {
+            // Category with the given id does not exist
+            return null;
+        }
     }
 
     @Override

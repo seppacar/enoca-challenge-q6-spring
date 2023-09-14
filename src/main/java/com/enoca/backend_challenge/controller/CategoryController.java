@@ -6,6 +6,7 @@ import com.enoca.backend_challenge.model.Category;
 import com.enoca.backend_challenge.service.CategoryService;
 import com.enoca.backend_challenge.service.mapper.CategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
     @Autowired
-    CategoryMapper categoryMapper
+    CategoryMapper categoryMapper;
 
     // Get All Categories
     @GetMapping
@@ -30,12 +31,53 @@ public class CategoryController {
                 .collect(Collectors.toList());
     }
 
-    // TODO: Get Product with Id
+    // Get Category by Id
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
+        Category category = categoryService.getCategoryById(id);
+        if (category != null) {
+            CategoryDTO categoryDTO = categoryMapper.convertToDTO(category);
+            return ResponseEntity.ok(categoryDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-    // TODO: Create Product
+    // Create Category
+    @PostMapping
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
+        Category category = categoryMapper.convertFromDTO(categoryDTO);
+        Category createdCategory = categoryService.createCategory(category);
+        if (createdCategory != null) {
+            CategoryDTO createdCategoryDTO = categoryMapper.convertToDTO(createdCategory);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdCategoryDTO);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
-    // TODO: Update Product
+    // Update Category by Id
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
+        Category updatedCategory = categoryMapper.convertFromDTO(categoryDTO);
+        Category category = categoryService.updateCategory(id, updatedCategory);
+        if (category != null) {
+            CategoryDTO updatedCategoryDTO = categoryMapper.convertToDTO(category);
+            return ResponseEntity.ok(updatedCategoryDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-    // TODO: Delete Product
+    // Delete Category by Id
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+        boolean deleted = categoryService.deleteCategoryById(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

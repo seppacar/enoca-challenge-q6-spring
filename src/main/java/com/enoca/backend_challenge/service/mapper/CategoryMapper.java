@@ -12,21 +12,31 @@ import java.util.stream.Collectors;
 public class CategoryMapper {
 
     public CategoryDTO convertToDTO(Category category){
-        List<ProductDTO> productDTOs = category.getProducts().stream()
-                .map(product -> ProductDTO.builder()
-                        .productId(product.getId())
-                        .name(product.getName())
-                        .price(product.getPrice())
-                        .categoryName(product.getCategory().getName())
-                        // Map other product fields if needed
-                        .build())
-                .collect(Collectors.toList());
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setCategoryId(category.getId());
+        categoryDTO.setName(category.getName());
+        // If Category has Products map
+        if (category.getProducts() != null){
+            List<ProductDTO> productDTOs = category.getProducts().stream()
+                    .map(product -> ProductDTO.builder()
+                            .productId(product.getId())
+                            .name(product.getName())
+                            .price(product.getPrice())
+                            .categoryName(product.getCategory().getName())
+                            // Map other product fields if needed
+                            .build())
+                    .collect(Collectors.toList());
+            categoryDTO.setProducts(productDTOs);
+        }
 
-        return CategoryDTO.builder()
-                .categoryId(category.getId())
-                .name(category.getName())
-                .products(productDTOs) // Set the list of ProductDTOs
-                .build();
+        return categoryDTO;
+    }
+
+    public Category convertFromDTO(CategoryDTO categoryDTO){
+        Category category = new Category();
+        category.setName(categoryDTO.getName());
+        // Will there be other properties?
+        return category;
     }
 
 }
