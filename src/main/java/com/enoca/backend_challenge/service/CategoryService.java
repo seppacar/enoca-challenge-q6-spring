@@ -10,9 +10,13 @@ public interface CategoryService {
 
     Category getCategoryById(Long id);
 
+    Category getCategoryByName(String categoryName);
+
     Category createCategory(Category category);
 
     Category updateCategory(Long id, Category category);
 
     boolean deleteCategoryById(Long id);
+
+    boolean categoryExistsById (Long id);
 }

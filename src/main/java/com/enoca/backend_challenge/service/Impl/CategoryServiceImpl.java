@@ -23,6 +23,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category getCategoryByName(String categoryName) {
+        return categoryRepository.findByName(categoryName);
+    }
+
+    @Override
     public Category createCategory(Category category) {
         return categoryRepository.save(category);
     }
@@ -41,5 +46,10 @@ public class CategoryServiceImpl implements CategoryService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean categoryExistsById(Long id) {
+        return categoryExistsById(id);
     }
 }
