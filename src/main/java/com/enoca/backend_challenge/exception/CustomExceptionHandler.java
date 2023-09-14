@@ -17,4 +17,10 @@ public class CustomExceptionHandler {
         // Return a response with HTTP status 404 (Not Found)
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(ResourceUpdateFailedException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceUpdateFailedException ex) {
+        // Return a response with HTTP status 405 (Conflict)
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }
