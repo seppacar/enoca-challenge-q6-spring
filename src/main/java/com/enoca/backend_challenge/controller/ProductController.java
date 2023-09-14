@@ -24,7 +24,7 @@ public class ProductController {
         List<Product> products = productService.getAllProducts();
 
         return products.stream()
-                .map(this::convertToDTO)
+                .map(ProductDTO::convertToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -43,21 +43,13 @@ public class ProductController {
     // Create Product
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
-        Product createdProduct = productService.createProduct(productDTO);
-        ProductDTO createdProductDTO = convertToDTO(createdProduct);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProductDTO);
+        return null;
     }
 
     // Update Product
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
-        Product updatedProduct = productService.updateProduct(id, productDTO);
-        if (updatedProduct != null) {
-            ProductDTO updatedProductDTO = convertToDTO(updatedProduct);
-            return ResponseEntity.ok(updatedProductDTO);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return null;
     }
 
     // Delete Product
