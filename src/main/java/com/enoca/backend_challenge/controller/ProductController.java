@@ -1,6 +1,7 @@
 package com.enoca.backend_challenge.controller;
 
 import com.enoca.backend_challenge.dto.ProductDTO;
+import com.enoca.backend_challenge.exception.ResourceNotFoundException;
 import com.enoca.backend_challenge.model.Product;
 import com.enoca.backend_challenge.service.ProductService;
 import com.enoca.backend_challenge.service.mapper.ProductMapper;
@@ -73,7 +74,7 @@ public class ProductController {
             }
         }
         else{
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Resource with given id not found.");
         }
     }
 
@@ -84,7 +85,7 @@ public class ProductController {
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Resource with given id not found.");
         }
     }
 }

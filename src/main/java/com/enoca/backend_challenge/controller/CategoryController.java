@@ -1,7 +1,9 @@
 package com.enoca.backend_challenge.controller;
 
 import com.enoca.backend_challenge.dto.CategoryDTO;
-import com.enoca.backend_challenge.dto.ProductDTO;
+import com.enoca.backend_challenge.exception.DuplicateResourceException;
+import com.enoca.backend_challenge.exception.ResourceNotFoundException;
+import com.enoca.backend_challenge.exception.ResourceUpdateFailedException;
 import com.enoca.backend_challenge.model.Category;
 import com.enoca.backend_challenge.service.CategoryService;
 import com.enoca.backend_challenge.service.mapper.CategoryMapper;
@@ -39,7 +41,7 @@ public class CategoryController {
             CategoryDTO categoryDTO = categoryMapper.convertToDTO(category);
             return ResponseEntity.ok(categoryDTO);
         } else {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Resource with given id not found.");
         }
     }
 
@@ -52,7 +54,7 @@ public class CategoryController {
             CategoryDTO createdCategoryDTO = categoryMapper.convertToDTO(createdCategory);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdCategoryDTO);
         } else {
-            return ResponseEntity.badRequest().build();
+            throw new DuplicateResourceException("Resource already exists.");
         }
     }
 
@@ -65,7 +67,7 @@ public class CategoryController {
             CategoryDTO updatedCategoryDTO = categoryMapper.convertToDTO(category);
             return ResponseEntity.ok(updatedCategoryDTO);
         } else {
-            return ResponseEntity.notFound().build();
+            throw new ResourceUpdateFailedException("Resource with given id not found or duplicate resource");
         }
     }
 
@@ -76,7 +78,7 @@ public class CategoryController {
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Resource with given id not found.");
         }
     }
 
