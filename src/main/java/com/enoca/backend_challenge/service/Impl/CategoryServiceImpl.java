@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deleteCategoryById(Long id) {
         // If object exists delete and return true else return false
         if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);
