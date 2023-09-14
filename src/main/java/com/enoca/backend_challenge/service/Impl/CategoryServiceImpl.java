@@ -31,15 +31,23 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(Category category) {
-        return categoryRepository.save(category);
+        Category findCategory = categoryRepository.findByName(category.getName());
+        if (findCategory == null){
+            return categoryRepository.save(category);
+        }
+        else{
+            return null;
+        }
     }
 
     @Override
     public Category updateCategory(Long id, Category category) {
         // Check if the category with the given id exists in the database
         Optional<Category> optionalCategory = categoryRepository.findById(id);
+        // Check if category with same name exists
+        Category findCategory = categoryRepository.findByName(category.getName());
 
-        if (optionalCategory.isPresent()) {
+        if (optionalCategory.isPresent() && findCategory == null) {
             Category existingCategory = optionalCategory.get();
 
             // Update the properties of the existing category with the provided values
