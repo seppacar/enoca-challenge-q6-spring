@@ -42,7 +42,6 @@ public class ProductController {
                 .name(product.getName())
                 .price(product.getPrice())
                 .build();
-        System.out.println(product.getCategory().getName());
 
         if (product.getCategory() != null) {
             productDTO.setCategoryName(product.getCategory().getName());
